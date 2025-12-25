@@ -10,6 +10,8 @@ class VoiceGenerationsController < ApplicationController
         status: :pending
         )
 
+        VoiceGenerationJob.perform_later(voice_generation.id)
+
         render json: {
         id: voice_generation.id,
         status: voice_generation.status
