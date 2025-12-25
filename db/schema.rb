@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2025_12_25_093658) do
+ActiveRecord::Schema[8.1].define(version: 2025_12_25_114458) do
   create_table "users", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
     t.datetime "created_at", null: false
     t.string "email"
@@ -26,6 +26,10 @@ ActiveRecord::Schema[8.1].define(version: 2025_12_25_093658) do
     t.integer "status"
     t.text "text"
     t.datetime "updated_at", null: false
+    t.bigint "user_id", null: false
     t.string "voice"
+    t.index ["user_id"], name: "index_voice_generations_on_user_id"
   end
+
+  add_foreign_key "voice_generations", "users"
 end
