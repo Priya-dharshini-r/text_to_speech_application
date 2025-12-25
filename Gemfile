@@ -28,6 +28,9 @@ gem "solid_cache"
 gem "solid_queue"
 gem "solid_cable"
 
+# Use sidekiq for background jobs 
+gem "sidekiq"
+
 # mysql 2 support for Active Record 
 gem "mysql2", ">= 0.5.5"
 
