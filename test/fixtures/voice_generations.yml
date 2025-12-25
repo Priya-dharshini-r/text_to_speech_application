@@ -1,0 +1,19 @@
+# Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  text: MyText
+  voice: MyString
+  language: MyString
+  provider: MyString
+  status: 1
+  audio_url: MyString
+  error_message: MyText
+
+two:
+  text: MyText
+  voice: MyString
+  language: MyString
+  provider: MyString
+  status: 1
+  audio_url: MyString
+  error_message: MyText
