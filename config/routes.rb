@@ -11,4 +11,6 @@ Rails.application.routes.draw do
 
   # Defines the root path route ("/")
   # root "posts#index"
+  post "/generate_voice", to: "voice_generations#create"
+  resources :voice_generations, only: [:index, :show]
 end
