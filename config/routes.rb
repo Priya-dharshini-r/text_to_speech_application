@@ -11,6 +11,12 @@ Rails.application.routes.draw do
 
   # Defines the root path route ("/")
   # root "posts#index"
+  post   "/signup", to: "users#create"
+  
+  post "/login", to: "sessions#create"
+  delete "/logout", to: "sessions#destroy"
+  get "/me", to: "sessions#me"
+
   post "/generate_voice", to: "voice_generations#create"
   resources :voice_generations, only: [:index, :show]
 end

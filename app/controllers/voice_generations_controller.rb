@@ -1,50 +1,48 @@
 class VoiceGenerationsController < ApplicationController
-    protect_from_forgery with: :null_session
-    
-    def create
-        voice_generation = current_user.voice_generations.create!(
-        text: params[:text],
-        voice: params[:voice],
-        language: params[:language],
+  protect_from_forgery with: :null_session
+  before_action :authenticate_user!
+
+  def create
+    vg = current_user.voice_generations.create!(
+      voice_generation_params.merge(
         status: :pending,
         provider: "elevenlabs"
+      )
     )
 
-    VoiceGenerationJob.perform_later(voice_generation.id)
+    VoiceGenerationJob.perform_later(vg.id)
+
+    render json: { id: vg.id, status: vg.status }, status: :created
+  end
+
+  def index
+    vgs = current_user.voice_generations.order(created_at: :desc)
+
+    render json: vgs.map { |vg|
+      {
+        id: vg.id,
+        text: vg.text,
+        audio_url: vg.audio_url,
+        status: vg.status
+      }
+    }
+  end
+
+  def show
+    vg = current_user.voice_generations.find_by(id: params[:id])
+
+    return render json: { status: "not_found" } unless vg
 
     render json: {
-            id: voice_generation.id,
-            status: voice_generation.status
-        }, status: :created
-    end
+      id: vg.id,
+      status: vg.status,
+      audio_url: vg.audio_url
+    }
+  end
 
+  private
 
-    def index
-        vgs = current_user.voice_generations.order(created_at: :desc)
-        render json: vgs.map { |vg|
-            {
-                id: vg.id,
-                text: vg.text,
-                audio_url: vg.audio_url,
-                status: vg.status
-            }
-        }
-    end
-
-    def show
-        vg = current_user.voice_generations.find_by(id: params[:id])
-
-        unless vg
-            return render json: { status: "not_found" }, status: :ok
-        end
-
-        render json: {
-            id: vg.id,
-            status: vg.status,
-            audio_url: vg.audio_url,
-            processing_at: vg.processing_at,
-            completed_at: vg.completed_at,
-            failed_at: vg.failed_at
-        }
-    end
+  def voice_generation_params
+    params.require(:voice_generation).permit(:text, :voice, :language)
+  end
 end
