@@ -17,6 +17,7 @@ module TextToSpeechApplication
     config.autoload_lib(ignore: %w[assets tasks])
     config.active_job.queue_adapter = :sidekiq
     config.supabase = config_for(:supabase)
+    config.elevenlabs = config_for(:elevenlabs)
 
     # Configuration for the application, engines, and railties goes here.
     #

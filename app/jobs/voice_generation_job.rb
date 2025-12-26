@@ -2,27 +2,34 @@ class VoiceGenerationJob < ApplicationJob
   queue_as :default
 
   def perform(voice_generation_id)
-    voice_generation = VoiceGeneration.find(voice_generation_id)
-    voice_generation.processing!
+    vg = VoiceGeneration.find(voice_generation_id)
+    vg.processing!
 
-    # Create a temporary audio file (placeholder)
-    file_path = "/tmp/voice_#{voice_generation.id}.mp3"
-    File.write(file_path, "FAKE AUDIO DATA")
+    # Generate audio from ElevenLabs
+    audio_binary = ElevenLabs::Client.new.generate_audio(vg.text)
+
+    # Save temp file
+    file_path = Rails.root.join("tmp", "voice_#{vg.id}.mp3")
+    File.binwrite(file_path, audio_binary)
 
     # Upload to Supabase
     uploader = SupabaseUploader.new
-    key = "voice_#{voice_generation.id}.mp3"
-    audio_url = uploader.upload(file_path: file_path, key: key)
+    audio_url = uploader.upload(
+      file_path: file_path,
+      key: "voice_#{vg.id}.mp3"
+    )
 
-    voice_generation.update!(
-      audio_url: audio_url,
-      status: :completed
+    # Update DB
+    vg.update!(
+      status: :completed,
+      audio_url: audio_url
     )
   rescue => e
-    voice_generation.update!(
+    vg.update!(
       status: :failed,
       error_message: e.message
     )
+    raise
   ensure
     File.delete(file_path) if file_path && File.exist?(file_path)
   end

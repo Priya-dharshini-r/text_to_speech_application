@@ -6,17 +6,18 @@ class VoiceGenerationsController < ApplicationController
         text: params[:text],
         voice: params[:voice],
         language: params[:language],
-        provider: "elevenlabs",
-        status: :pending
-        )
+        status: :pending,
+        provider: "elevenlabs"
+    )
 
-        VoiceGenerationJob.perform_later(voice_generation.id)
+    VoiceGenerationJob.perform_later(voice_generation.id)
 
-        render json: {
-        id: voice_generation.id,
-        status: voice_generation.status
+    render json: {
+            id: voice_generation.id,
+            status: voice_generation.status
         }, status: :created
     end
+
 
     def index
         voice_generations = current_user.voice_generations
