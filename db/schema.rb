@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2025_12_25_114458) do
+ActiveRecord::Schema[8.1].define(version: 2025_12_26_113759) do
   create_table "users", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
     t.datetime "created_at", null: false
     t.string "email"
@@ -19,9 +19,12 @@ ActiveRecord::Schema[8.1].define(version: 2025_12_25_114458) do
 
   create_table "voice_generations", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
     t.string "audio_url"
+    t.datetime "completed_at"
     t.datetime "created_at", null: false
     t.text "error_message"
+    t.datetime "failed_at"
     t.string "language"
+    t.datetime "processing_at"
     t.string "provider"
     t.integer "status"
     t.text "text"

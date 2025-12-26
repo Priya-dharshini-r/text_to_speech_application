@@ -27,8 +27,15 @@ class VoiceGenerationsController < ApplicationController
     end
 
     def show
-        voice_generation = current_user.voice_generations.find(params[:id])
-
-        render json: voice_generation
+        vg = current_user.voice_generations.find(params[:id])
+        render json: {
+            id: vg.id,
+            status: vg.status,
+            audio_url: vg.audio_url,
+            processing_at: vg.processing_at,
+            completed_at: vg.completed_at,
+            failed_at: vg.failed_at,
+            error_message: vg.error_message
+        }
     end
 end
