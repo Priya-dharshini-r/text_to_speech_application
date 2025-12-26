@@ -1,0 +1,12 @@
+development:
+  api_key: sk_10f38845aa4ce33c0f3b6d2b3e3aae11f9855444e02493b9
+  voice_id: 21m00Tcm4TlvDq8ikWAM
+  model_id: eleven_turbo_v2
+
+test:
+  api_key: test_key
+  voice_id: test_voice
+
+production:
+  api_key: <%= ENV["ELEVENLABS_API_KEY"] %>
+  voice_id: <%= ENV["ELEVENLABS_VOICE_ID"] %>
