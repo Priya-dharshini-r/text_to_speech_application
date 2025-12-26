@@ -1,6 +1,5 @@
 class VoiceGeneration < ApplicationRecord
-  belongs_to :user
-
+  belongs_to :user  
   enum :status, {
     pending: 0,
     processing: 1,

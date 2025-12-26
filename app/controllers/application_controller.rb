@@ -1,17 +1,12 @@
 class ApplicationController < ActionController::Base
-  protect_from_forgery with: :null_session
+  def authenticate_user!
+    header = request.headers["Authorization"]
+    token = header&.split(" ")&.last
+    decoded = JsonWebToken.decode(token)
 
-  def current_user
-    @current_user ||= begin
-      if session[:user_id]
-        User.find(session[:user_id])
-      else
-        user = User.create!(
-          email: "guest_#{SecureRandom.uuid}@example.com"
-        )
-        session[:user_id] = user.id
-        user
-      end
-    end
+    @current_user = User.find_by(id: decoded[:user_id]) if decoded
+    render json: { error: "Unauthorized" }, status: :unauthorized unless @current_user
   end
+
+  attr_reader :current_user
 end
