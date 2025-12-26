@@ -1,0 +1,14 @@
+development:
+  url: https://aymuixloshcuyunkbidg.supabase.co
+  service_key: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImF5bXVpeGxvc2hjdXl1bmtiaWRnIiwicm9sZSI6InNlcnZpY2Vfcm9sZSIsImlhdCI6MTc2Njc0MTE3MSwiZXhwIjoyMDgyMzE3MTcxfQ.VMwDMNhUiL2N60W3ubLZJjEH-z9DAffAkuPleBVoy98
+  bucket: text-to-speech
+
+test:
+  url: https://aymuixloshcuyunkbidg.supabase.co
+  service_key: test_key
+  bucket: text-to-speech
+
+production:
+  url: <%= ENV["SUPABASE_URL"] %>
+  service_key: <%= ENV["SUPABASE_SERVICE_KEY"] %>
+  bucket: <%= ENV["SUPABASE_BUCKET"] %>

@@ -1,8 +1,10 @@
 class SupabaseUploader
   def initialize
-    @base_url = ENV.fetch("SUPABASE_URL")
-    @bucket   = ENV.fetch("SUPABASE_BUCKET")
-    @api_key  = ENV.fetch("SUPABASE_SERVICE_KEY")
+    config = Rails.configuration.supabase
+
+    @base_url = config["url"]
+    @bucket   = config["bucket"]
+    @api_key  = config["service_key"]
   end
 
   def upload(file_path:, key:)
