@@ -1,4 +1,6 @@
-class ApplicationController < ActionController::Base
+class ApplicationController < ActionController::API
+  include ActionController::Cookies
+  
   def authenticate_user!
     header = request.headers["Authorization"]
     token = header&.split(" ")&.last
